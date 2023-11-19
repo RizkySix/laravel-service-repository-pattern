@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AnimeFanArtController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Http\Request;
@@ -22,3 +23,8 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 
 Route::post('/webhook' , [TestController::class , 'webhook']);
 Route::get('/user/{email}' , [UserController::class , 'findUser']);
+
+//Anime section
+Route::get('/animefan-art' , [AnimeFanArtController::class , 'throwAll']);
+Route::get('/animefan-art-specifiec' , [AnimeFanArtController::class , 'searchAnimeByName']);
+
