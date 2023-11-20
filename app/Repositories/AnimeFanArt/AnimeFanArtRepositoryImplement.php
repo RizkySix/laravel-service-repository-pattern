@@ -34,4 +34,34 @@ class AnimeFanArtRepositoryImplement implements AnimeFanArtRepositoryInterface
     {
         return $this->model->where('character_name' , 'like' , '%' . $name . '%')->latest()->get();
     }
+
+    /**
+     * Hande get with categories
+     */
+    public function getAllDataWithCategories(): Collection
+    {
+        return $this->model->with(['categories:category_name'])->latest()->get();
+    }
+
+    /**
+     * Handle store fan art
+     */
+    public function storeFanArt(array $data, array $categories) : AnimeFanArt
+    {
+        $instace = $this->model->create($data);
+        
+        $instace->categories()->attach($categories['categories'] , ['created_by' => rand(1,10)]);
+
+        return $instace;
+    }
+
+
+    /**
+     * Handle update categoires
+     */
+    public function updateCategories(AnimeFanArt $instace,  array $newCategories)
+    {
+      
+        $instace->categories()->sync($newCategories);
+    }
 }

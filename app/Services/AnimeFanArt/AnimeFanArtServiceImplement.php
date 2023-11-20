@@ -3,6 +3,7 @@
 namespace App\Services\AnimeFanArt;
 
 use App\Mail\WebhookNotif;
+use App\Models\AnimeFanArt;
 use App\Repositories\AnimeFanArt\AnimeFanArtRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use App\Services\User\UserServiceImplement;
@@ -55,5 +56,66 @@ class AnimeFanArtServiceImplement implements AnimeFanArtServiceInterface
             Log::debug($e->getMessage());
             return $e->getMessage();
         }
+    }
+
+
+    /**
+     * Service Logic
+     */
+    public function getAllDataWithCategories(): Collection|Exception
+    {
+        try {
+            $result = $this->repository->getAllDataWithCategories();
+
+            return $result;
+        } catch (Exception $e ) {
+            Log::debug($e->getMessage());
+            return $e->getMessage();
+        }
+    }
+
+
+    /**
+     * Service logic
+     */
+    public function storeFanArt(array $data): AnimeFanArt|Exception
+    {
+        try {
+           $categories = [
+            'categories' => $data['categories']
+           ];
+           unset($data['categories']);
+          
+           $result = $this->repository->storeFanArt($data , $categories);
+
+           return $result;
+        } catch (Exception $e ) {
+            Log::debug($e->getMessage());
+            return $e->getMessage();
+        }
+    }
+
+
+    /**
+     * Service logic
+     */
+    public function updateCategories(AnimeFanArt $instace, array $newCategories)
+    {
+        try {
+            
+            $filteredCategories = [];
+           
+            foreach($newCategories['categories'] as $category)
+            {
+                $filteredCategories[$category['category_id']] = ['created_by' => $category['created_by']];
+             
+            }
+
+            $result = $this->repository->updateCategories($instace , $filteredCategories);
+            return $result;
+         } catch (Exception $e ) {
+             Log::debug($e->getMessage());
+             return $e->getMessage();
+         }
     }
 }

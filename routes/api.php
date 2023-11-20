@@ -26,5 +26,8 @@ Route::get('/user/{email}' , [UserController::class , 'findUser']);
 
 //Anime section
 Route::get('/animefan-art' , [AnimeFanArtController::class , 'throwAll']);
+Route::post('/animefan-art' , [AnimeFanArtController::class , 'store']);
+Route::put('/animefan-art/{anime}' , [AnimeFanArtController::class , 'update']);
 Route::get('/animefan-art-specifiec' , [AnimeFanArtController::class , 'searchAnimeByName']);
+Route::get('/animefan-art-category' , [AnimeFanArtController::class , 'throwAllWithCategories']);
 
