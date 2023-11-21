@@ -18,7 +18,6 @@ class AnimeFanArtFactory extends Factory
     {
         return [
            'character_name' => fake()->name(),
-           'preview_image' => fake()->url(),
            'complete_file' => fake()->url(),
         ];
     }

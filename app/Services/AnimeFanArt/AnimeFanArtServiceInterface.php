@@ -11,7 +11,8 @@ interface AnimeFanArtServiceInterface
     public function getAllData() : Collection|Exception;
     public function searchDataByName(string $name) :  Collection|Exception;
     public function getAllDataWithCategories() :  Collection|Exception;
-    public function storeFanArt(array $data) : AnimeFanArt|Exception;
-    public function updateCategories(AnimeFanArt $instace, array $newCategories);
+    public function storeFanArt(array $data) ;//: AnimeFanArt|Exception;
+    public function updateCategories(AnimeFanArt $anime, array $newCategories);
+    public function deleteFanArt(AnimeFanArt $anime);
 
 }

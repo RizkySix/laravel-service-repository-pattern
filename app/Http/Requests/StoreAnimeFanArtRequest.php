@@ -23,7 +23,10 @@ class StoreAnimeFanArtRequest extends FormRequest
     {
         return [
             'character_name' => 'required|string',
-            'preview_image' => 'required|string',
+            'preview_image' => 'required|array',
+            'preview_image.*' => 'required|array',
+            'preview_image.*.image' => 'required|file|mimes:jpg,jpeg,png,gif|max:5100',
+            'preview_image.*.short_description' => 'required|string',
             'complete_file' => 'required|string',
             'categories' => 'required|array',
             'categories.*' => 'required|numeric'

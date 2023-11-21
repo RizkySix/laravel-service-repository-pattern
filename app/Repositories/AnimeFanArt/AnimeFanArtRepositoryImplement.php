@@ -46,22 +46,41 @@ class AnimeFanArtRepositoryImplement implements AnimeFanArtRepositoryInterface
     /**
      * Handle store fan art
      */
-    public function storeFanArt(array $data, array $categories) : AnimeFanArt
-    {
-        $instace = $this->model->create($data);
+    public function storeFanArt(array $data, array $categories) 
+    { 
+        $anime = $this->model->create([
+            'character_name' => $data['character_name'],
+            'complete_file' => $data['complete_file'],
+        ]);
         
-        $instace->categories()->attach($categories['categories'] , ['created_by' => rand(1,10)]);
+        foreach($data['preview_image'] as $data){
+            $anime->image()->create($data);
+        }
 
-        return $instace;
+        $anime->categories()->attach($categories['categories'] , ['created_by' => rand(1,10)]);
+
+        return $anime;
     }
 
 
     /**
      * Handle update categoires
      */
-    public function updateCategories(AnimeFanArt $instace,  array $newCategories)
+    public function updateCategories(AnimeFanArt $anime,  array $newCategories)
     {
       
-        $instace->categories()->sync($newCategories);
+        return $anime->categories()->sync($newCategories);
+    }
+
+
+    /**
+     * Delete fan art
+     */
+    public function deleteFanArt(AnimeFanArt $anime)
+    {
+        $anime->categories()->detach();
+        $anime->delete();
+
+        return $anime;
     }
 }

@@ -91,4 +91,19 @@ class AnimeFanArtController extends Controller
             'data' => $result
         ], 200);
     }
+
+
+    /**
+     * Deltee fan art
+     */
+    public function delete(AnimeFanArt $anime)
+    {
+        $result = $this->service->deleteFanArt($anime);
+
+        return response()->json([
+            'status' => true,
+            'data' => $result
+        ], 200);
+    }
 }
+

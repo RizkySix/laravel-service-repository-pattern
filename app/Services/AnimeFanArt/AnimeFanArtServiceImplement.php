@@ -78,9 +78,16 @@ class AnimeFanArtServiceImplement implements AnimeFanArtServiceInterface
     /**
      * Service logic
      */
-    public function storeFanArt(array $data): AnimeFanArt|Exception
+    public function storeFanArt(array $data)
     {
         try {
+          
+            foreach ($data['preview_image'] as $key => $value) {
+                $path = $value['image']->store('Images/FanArt');
+                $data['preview_image'][$key]['path'] = $path;
+                unset($data['preview_image'][$key]['image']);
+            }
+          
            $categories = [
             'categories' => $data['categories']
            ];
@@ -99,7 +106,7 @@ class AnimeFanArtServiceImplement implements AnimeFanArtServiceInterface
     /**
      * Service logic
      */
-    public function updateCategories(AnimeFanArt $instace, array $newCategories)
+    public function updateCategories(AnimeFanArt $anime, array $newCategories)
     {
         try {
             
@@ -111,8 +118,26 @@ class AnimeFanArtServiceImplement implements AnimeFanArtServiceInterface
              
             }
 
-            $result = $this->repository->updateCategories($instace , $filteredCategories);
+            $result = $this->repository->updateCategories($anime , $filteredCategories);
             return $result;
+         } catch (Exception $e ) {
+             Log::debug($e->getMessage());
+             return $e->getMessage();
+         }
+    }
+
+
+
+     /**
+     * Service logic
+     */
+    public function deleteFanArt(AnimeFanArt $anime)
+    {
+        try {
+            
+          $result = $this->repository->deleteFanArt($anime);
+
+          return $result;
          } catch (Exception $e ) {
              Log::debug($e->getMessage());
              return $e->getMessage();

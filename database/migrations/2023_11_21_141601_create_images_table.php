@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('anime_fan_art', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->string('character_name' , 50);
-            $table->string('complete_file');
-            $table->timestamps();
+            $table->string('path');
+            $table->integer('imageable_id');
+            $table->string('imageable_type');
+            $table->string('short_description' , 50)->nullable();
         });
     }
 
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('anime_fan_art');
+        Schema::dropIfExists('images');
     }
 };
