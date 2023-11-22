@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('character_name' , 50);
             $table->string('complete_file');
+            $table->decimal('price' , 10 , 2 , true);
+            $table->integer('like' , false , true);
             $table->timestamps();
         });
     }

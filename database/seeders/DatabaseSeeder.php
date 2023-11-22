@@ -32,6 +32,12 @@ class DatabaseSeeder extends Seeder
 
             DB::table('anime_categories')->insert($pivotData);
             
+            for($i = 0; $i < 3; $i++){
+                $anime->image()->create([
+                    'path' => fake()->url(),
+                    'short_description' => fake()->name()
+                ]);
+            }
          });
     }
 }

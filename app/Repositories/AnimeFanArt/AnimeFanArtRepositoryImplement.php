@@ -24,7 +24,7 @@ class AnimeFanArtRepositoryImplement implements AnimeFanArtRepositoryInterface
      */
     public function getAllData() : Collection
     {
-        return $this->model->latest()->get();
+        return $this->model->with(['image'])->latest()->get();
     }
 
     /**
@@ -68,7 +68,7 @@ class AnimeFanArtRepositoryImplement implements AnimeFanArtRepositoryInterface
      */
     public function updateCategories(AnimeFanArt $anime,  array $newCategories)
     {
-      
+     
         return $anime->categories()->sync($newCategories);
     }
 

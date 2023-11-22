@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreAnimeFanArtRequest;
 use App\Http\Requests\UpdateFanArtCategoriesRequest;
 use App\Models\AnimeFanArt;
+use App\Models\Order;
+use App\Models\User;
 use App\Repositories\AnimeFanArt\AnimeFanArtRepositoryInterface;
 use App\Services\AnimeFanArt\AnimeFanArtServiceInterface;
 use Illuminate\Http\JsonResponse;
@@ -64,7 +66,7 @@ class AnimeFanArtController extends Controller
     /**
      * Store anime fan art
      */
-    public function store(StoreAnimeFanArtRequest $request) 
+    public function store(StoreAnimeFanArtRequest $request) : JsonResponse
     {
         $validatedData = $request->validated();
 
@@ -80,7 +82,7 @@ class AnimeFanArtController extends Controller
     /**
      * update anime fan art
      */
-    public function update(AnimeFanArt $anime , UpdateFanArtCategoriesRequest $request) 
+    public function update(AnimeFanArt $anime , UpdateFanArtCategoriesRequest $request) : JsonResponse
     {
         $validatedData = $request->validated();
 
@@ -96,13 +98,41 @@ class AnimeFanArtController extends Controller
     /**
      * Deltee fan art
      */
-    public function delete(AnimeFanArt $anime)
+    public function delete(AnimeFanArt $anime) : JsonResponse
     {
         $result = $this->service->deleteFanArt($anime);
 
         return response()->json([
             'status' => true,
             'data' => $result
+        ], 200);
+    }
+
+
+    /**
+     * Tester
+     */
+    public function testOne()
+    {
+        $order = Order::find('FNART-115624');
+
+        return response()->json([
+            'status' => true,
+            'data' => $order
+        ], 200);
+    }
+
+
+    /**
+     * Tester
+     */
+    public function testGet()
+    {
+        $order = Order::find('FNART-115624');
+
+        return response()->json([
+            'status' => true,
+            'data' => $order->load(['reference'])
         ], 200);
     }
 }

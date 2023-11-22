@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Mail\WebhookNotif;
+use App\Models\Order;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
@@ -27,7 +29,7 @@ class TestController extends Controller
             'price' => ['20000'],
             'description' => ['Baju1'],
             'returnUrl' => 'https://ipaymu.com/return',
-            'notifyUrl' => 'https://1e29-203-78-114-241.ngrok-free.app/api/webhook',
+            'notifyUrl' => 'https://ab93-103-190-47-18.ngrok-free.app/api/webhook',
             'cancelUrl' => 'https://ipaymu.com/cancel',
             'referenceId' => 'ID1234' . rand(2, 10),
             'weight' => ['1'],
@@ -69,7 +71,35 @@ class TestController extends Controller
     public function webhook(Request $request)
     {
         $email = 'rizkyjanu2001@gmail.com';
-        Mail::to($email)->send(new WebhookNotif($request->getContent()));
+        //Mail::to($email)->send(new WebhookNotif($request->getContent()));
+        Log::debug($request);
+
+        $isNewOrder = Order::find('FNART-' . $request->trx_id);
+
+        if(!$isNewOrder){
+          $transactionId = 'FNART-' . $request->trx_id;
+          $order = Order::create([
+                'transaction_id' => $transactionId,
+                'status' => $request->status,
+                'buyer_name' => $request->buyer_name,
+                'buyer_email' => $request->buyer_email,
+                'buyer_phone' => $request->buyer_phone,
+                'reference_id' => $transactionId,
+                'amount' => $request->amount,
+                'fee' => $request->fee,
+                'total' => $request->amount - $request->fee,
+                'created_at' => now()
+          ]);
+
+          $order->reference()->create([
+            'reference_id' => $transactionId,
+            'via' => $request->via,
+            'channel' => $request->channel,
+            'payment_code' => $request->virtual_account,
+            'expired_at' => $request->expired_at,
+            'message' => 'This is pending order'
+          ]);
+        }
         return response('' , 200);
     }
 }

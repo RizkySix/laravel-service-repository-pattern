@@ -32,3 +32,6 @@ Route::delete('/animefan-art/{anime}' , [AnimeFanArtController::class , 'delete'
 Route::get('/animefan-art-specifiec' , [AnimeFanArtController::class , 'searchAnimeByName']);
 Route::get('/animefan-art-category' , [AnimeFanArtController::class , 'throwAllWithCategories']);
 
+Route::post('/tester' , [AnimeFanArtController::class , 'testOne']);
+Route::get('/tester' , [AnimeFanArtController::class , 'testGet']);
+

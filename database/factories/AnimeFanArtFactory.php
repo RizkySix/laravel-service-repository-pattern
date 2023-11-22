@@ -19,6 +19,8 @@ class AnimeFanArtFactory extends Factory
         return [
            'character_name' => fake()->name(),
            'complete_file' => fake()->url(),
+           'price' => rand(100000, 1000000),
+           'like' => rand(100,1000)
         ];
     }
 }
