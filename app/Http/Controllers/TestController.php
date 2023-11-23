@@ -29,7 +29,7 @@ class TestController extends Controller
             'price' => ['20000'],
             'description' => ['Baju1'],
             'returnUrl' => 'https://ipaymu.com/return',
-            'notifyUrl' => 'https://ab93-103-190-47-18.ngrok-free.app/api/webhook',
+            'notifyUrl' => 'https://2517-103-17-246-25.ngrok-free.app/api/webhook',
             'cancelUrl' => 'https://ipaymu.com/cancel',
             'referenceId' => 'ID1234' . rand(2, 10),
             'weight' => ['1'],
@@ -99,6 +99,18 @@ class TestController extends Controller
             'expired_at' => $request->expired_at,
             'message' => 'This is pending order'
           ]);
+        } else {
+
+            if($request->status == 'berhasil' && $request->status_code == 1){
+                  $isNewOrder->update([
+                        'status' => $request->status
+                  ]);
+
+                  $isNewOrder->reference()->update([
+                      'message' => 'This order was paid succesfully'
+                  ]);
+            }
+
         }
         return response('' , 200);
     }
